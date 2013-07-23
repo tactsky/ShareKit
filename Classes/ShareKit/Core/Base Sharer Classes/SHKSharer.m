@@ -790,6 +790,9 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
             
         case SHKShareTypeUserInfo:
             return [[self class] canGetUserInfo];
+            
+        case SHKShareTypeGameMessage:
+            return (self.item.URL != nil);
 		default:
 			break;
 	}

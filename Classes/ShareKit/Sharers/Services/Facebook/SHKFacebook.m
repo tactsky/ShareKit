@@ -501,6 +501,40 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 		}];
 		[self.pendingConnections addObject:con];
 	}
+    else if(self.item.shareType == SHKShareTypeGameMessage){
+        
+        if (self.item.URL) {
+            NSString *url = [self.item.URL absoluteString];
+            [params setObject:url forKey:@"link"];
+        }
+        
+        if (self.item.title) {
+            [params setObject:self.item.title forKey:@"name"];
+        }
+        
+        if (self.item.text){
+			[params setObject:self.item.text forKey:@"description"];
+        }
+        
+        NSString *description = self.item.facebookURLShareDescription;
+		if (description){
+			[params setObject:description forKey:@"caption"];
+        }
+        
+        NSString *picture = self.item.facebookURLSharePictureURI;
+        if (picture) {
+            [params setObject:picture forKey:@"picture"];
+        }
+        
+		FBRequestConnection* con = [FBRequestConnection startWithGraphPath:@"me/feed"
+																parameters:params
+																HTTPMethod:@"POST" completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+																	[self FBRequestHandlerCallback:connection result:result error:error];
+																}];
+		[self.pendingConnections addObject:con];
+
+    }
+    
     [self sendDidStart];
 }
 
@@ -638,7 +672,7 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 
 - (void) doSHKShow
 {
-    if (self.item.shareType == SHKShareTypeText || self.item.shareType == SHKShareTypeImage || self.item.shareType == SHKShareTypeURL || self.item.shareType == SHKShareTypeFile)
+    if (self.item.shareType == SHKShareTypeText || self.item.shareType == SHKShareTypeImage || self.item.shareType == SHKShareTypeURL || self.item.shareType == SHKShareTypeFile || self.item.shareType == SHKShareTypeGameMessage)
     {
         [self showFacebookForm];
     }
@@ -707,11 +741,14 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
             break;
         case SHKShareTypeURL:
             rootView.text = self.item.text;
-            
             rootView.allowSendingEmptyMessage = YES;
             break;
         case SHKShareTypeFile:
             rootView.text = self.item.title;
+            break;
+        case SHKShareTypeGameMessage:
+            rootView.text = self.item.text;
+            break;
         default:
             break;
     }
@@ -734,6 +771,9 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
         case SHKShareTypeFile:
         case SHKShareTypeImage:
         case SHKShareTypeURL:
+            self.item.text = form.textView.text;
+            break;
+        case SHKShareTypeGameMessage:
             self.item.text = form.textView.text;
             break;
         default:
