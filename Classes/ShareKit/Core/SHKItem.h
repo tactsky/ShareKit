@@ -38,7 +38,8 @@ typedef enum
 	SHKShareTypeImage,
 	SHKShareTypeFile,
     SHKShareTypeUserInfo,
-    SHKShareTypeGameMessage
+    SHKShareTypeGameMessage,
+    SHKShareTypeMyFriends
     
 } SHKShareType;
 
