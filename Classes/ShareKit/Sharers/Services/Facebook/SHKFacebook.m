@@ -364,7 +364,7 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 		return NO;
 	
     // Ask for publish_actions permissions in context
-    if ((self.item.shareType != SHKShareTypeUserInfo || self.item.shareType != SHKShareTypeMyFriends) &&
+    if ((self.item.shareType != SHKShareTypeUserInfo && self.item.shareType != SHKShareTypeMyFriends) &&
         [FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {	// we need at least this.SHKCONFIG(facebookWritePermissions
         // No permissions found in session, ask for it
         [self saveItemForLater:SHKPendingSend];
