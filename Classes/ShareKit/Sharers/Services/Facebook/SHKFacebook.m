@@ -271,6 +271,11 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
     return YES;
 }
 
++ (BOOL)canGetFriendList
+{
+    return YES;
+}
+
 #pragma mark -
 #pragma mark Configuration : Dynamic Enable
 
