@@ -176,6 +176,7 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
     
     if (error) {
 		[FBSession.activeSession closeAndClearTokenInformation];
+        /*
         UIAlertView *alertView = [[UIAlertView alloc]
                                   initWithTitle:@"Error"
                                   message:error.localizedDescription
@@ -184,6 +185,7 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
                                   otherButtonTitles:nil];
         [alertView show];
         [alertView release];
+         */
     }
 	if (authingSHKFacebook == self) {
 		authingSHKFacebook = nil;
