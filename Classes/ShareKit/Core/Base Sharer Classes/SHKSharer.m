@@ -116,6 +116,11 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
     return NO;
 }
 
++ (BOOL)canSendAppRequest
+{
+    return NO;
+}
+
 + (BOOL)shareRequiresInternetConnection
 {
 	return YES;
@@ -153,6 +158,8 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
         case SHKShareTypeMyFriends:
 			return [self canGetFriendList];
 			
+        case SHKShareTypeSendAppRequest:
+			return [self canSendAppRequest];
 		default: 
 			break;
 	}
@@ -320,6 +327,22 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
     return [controller autorelease];
 }
 
++ (id)sendAppRequest:(NSString *)text
+{
+    SHKItem *item = [[SHKItem alloc] init];
+    item.shareType = SHKShareTypeSendAppRequest;
+    item.text = text;
+    
+    // Create controller and set share options
+	SHKSharer *controller = [[self alloc] init];
+	controller.item = item;
+    [item release];
+    
+	// share and/or show UI
+	[controller share];
+    
+    return [controller autorelease];
+}
 
 + (id)getUserInfo
 {
@@ -817,7 +840,8 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
             return [[self class] canGetUserInfo];
         case SHKShareTypeMyFriends:
             return [[self class] canGetFriendList];
-            
+        case SHKShareTypeSendAppRequest:
+            return [[self class] canSendAppRequest];
         case SHKShareTypeGameMessage:
             return (self.item.URL != nil);
 		default:
