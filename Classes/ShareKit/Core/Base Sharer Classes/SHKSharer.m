@@ -327,7 +327,7 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
     return [controller autorelease];
 }
 
-+ (id)sendAppRequest:(NSString *)text
++ (id)sendAppRequest:(NSString *)text to:(NSString*) to
 {
     SHKItem *item = [[SHKItem alloc] init];
     item.shareType = SHKShareTypeSendAppRequest;
@@ -336,6 +336,7 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
     // Create controller and set share options
 	SHKSharer *controller = [[self alloc] init];
 	controller.item = item;
+	controller.title = to;
     [item release];
     
 	// share and/or show UI

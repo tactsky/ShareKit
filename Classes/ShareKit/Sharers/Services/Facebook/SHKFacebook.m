@@ -532,7 +532,7 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 	}
 	else if (self.item.shareType == SHKShareTypeSendAppRequest)
     {
-        NSError *error;
+//        NSError *error;
 //        NSData *jsonData = [NSJSONSerialization
 //                            dataWithJSONObject:@{
 //                            @"social_karma": @"5",
@@ -543,14 +543,17 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 //            NSLog(@"JSON error: %@", error);
 //            return;
 //        }
-//        
+//
 //        NSString *giftStr = [[NSString alloc]
 //                             initWithData:jsonData
 //                             encoding:NSUTF8StringEncoding];
         
-//       NSMutableDictionary* para2 = [@{@"data" : giftStr} mutableCopy];
-       [self setQuiet:YES];
         NSMutableDictionary* para2 = [[[NSMutableDictionary alloc] init] autorelease];
+//       NSMutableDictionary* para2 = [@{@"data" : giftStr} mutableCopy];
+        if ( self.item.title ) {
+            [para2 setObject:self.item.title forKey:@"to"];
+        }
+        [self setQuiet:YES];
 //        [para2 setObject:@"true" forKey:@"new_style_message"];
         // Display the requests dialog
         [FBWebDialogs
