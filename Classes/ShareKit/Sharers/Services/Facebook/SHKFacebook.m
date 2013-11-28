@@ -44,6 +44,10 @@ static NSString *const kSHKFacebookVideoUploadLimits =@"kSHKFacebookVideoUploadL
 static SHKFacebook *authingSHKFacebook=nil;
 static SHKFacebook *requestingPermisSHKFacebook=nil;
 
+
+
+static FBFrictionlessRecipientCache * s_friendCache;
+
 @interface SHKFacebook()
 
 - (void)showFacebookForm;
@@ -548,11 +552,19 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 //                             initWithData:jsonData
 //                             encoding:NSUTF8StringEncoding];
         
+
         NSMutableDictionary* para2 = [[[NSMutableDictionary alloc] init] autorelease];
 //       NSMutableDictionary* para2 = [@{@"data" : giftStr} mutableCopy];
         if ( self.item.title ) {
             [para2 setObject:self.item.title forKey:@"to"];
         }
+        
+        if ( s_friendCache == NULL ) {
+            s_friendCache = [[FBFrictionlessRecipientCache alloc] init];
+        }
+        
+        [s_friendCache prefetchAndCacheForSession:nil];
+        
         [self setQuiet:YES];
 //        [para2 setObject:@"true" forKey:@"new_style_message"];
         // Display the requests dialog
@@ -585,7 +597,7 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
                  [self sendDidFinish];
              }
              [FBSession.activeSession close];	// unhook us
-         }];
+         } friendCache:s_friendCache];
     }
 	else if (self.item.shareType == SHKShareTypeMyFriends)
 	{	// sharekit demo app doesn't use this, handy if you need to show user info, such as user name for OAuth services in your app, see https://github.com/ShareKit/ShareKit/wiki/FAQ

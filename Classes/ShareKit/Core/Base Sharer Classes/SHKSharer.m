@@ -332,11 +332,11 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
     SHKItem *item = [[SHKItem alloc] init];
     item.shareType = SHKShareTypeSendAppRequest;
     item.text = text;
+	item.title = to;
     
     // Create controller and set share options
 	SHKSharer *controller = [[self alloc] init];
 	controller.item = item;
-	controller.title = to;
     [item release];
     
 	// share and/or show UI
