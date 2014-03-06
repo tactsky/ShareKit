@@ -213,11 +213,16 @@ BOOL SHKinit;
 		// Dismiss the modal view
         if([self.currentView respondsToSelector:@selector(presentingViewController)]) {
 			self.isDismissingView = YES;
-            [[self.currentView presentingViewController] dismissViewControllerAnimated:animated completion:^{
-                [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    [self viewWasDismissed];
+            UIViewController* presentingViewController = [self.currentView presentingViewController];
+            if ( presentingViewController != nil ) {
+                [presentingViewController dismissViewControllerAnimated:animated completion:^{
+                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                        [self viewWasDismissed];
+                    }];
                 }];
-            }];
+            } else {
+                [self viewWasDismissed];
+            }
         } else if ([self.currentView respondsToSelector:@selector(parentViewController)]) {
 			self.isDismissingView = YES;
             [[self.currentView parentViewController] dismissModalViewControllerAnimated:animated];
