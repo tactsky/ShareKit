@@ -73,6 +73,7 @@ typedef enum
 @property (nonatomic) SHKShareType shareType;
 
 @property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *caption;
 @property (nonatomic, strong) NSString *text;
 @property (nonatomic, strong) NSArray *tags;
 
