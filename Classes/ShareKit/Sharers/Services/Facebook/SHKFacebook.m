@@ -166,7 +166,7 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
     
     if (error && error.fberrorShouldNotifyUser) {
 		[FBSession.activeSession closeAndClearTokenInformation];
-        
+        /*
         UIAlertView *alertView = [[UIAlertView alloc]
                                   initWithTitle:@"Error"
                                   message:error.fberrorUserMessage
@@ -174,6 +174,7 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
                                   cancelButtonTitle:@"OK"
                                   otherButtonTitles:nil];
         [alertView show];
+         */
     }
 	if (authingSHKFacebook == self) {
 		authingSHKFacebook = nil;
