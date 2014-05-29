@@ -106,6 +106,16 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
     return NO;
 }
 
++ (BOOL)canGetMyFriends
+{
+    return NO;
+}
+
++ (BOOL)canSendAppRequest
+{
+    return NO;
+}
+
 + (BOOL)shareRequiresInternetConnection
 {
 	return YES;
