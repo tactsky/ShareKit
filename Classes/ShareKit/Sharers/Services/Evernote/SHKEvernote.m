@@ -48,6 +48,7 @@ NSString *const kSHKEvernoteUserInfo = @"kSHKEvernoteUserInfo";
 + (BOOL)canShareText  { return YES; }
 + (BOOL)canShareFile:(SHKFile *)file { return YES; }
 + (BOOL)canGetUserInfo { return YES; }
++ (BOOL)canGetMyFriends { return NO; }
 + (BOOL)requiresAuthentication { return YES; }
 
 

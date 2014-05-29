@@ -128,6 +128,8 @@
 	return YES;
 }
 
++ (BOOL)canGetMyFriends { return NO; }
+
 + (BOOL)canShareFile:(SHKFile *)file {
     return YES;
 }

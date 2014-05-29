@@ -11,8 +11,10 @@
 #import "SharersCommonHeaders.h"
 
 NSString *const kSHKFacebookUserInfo = @"kSHKFacebookUserInfo";
+NSString *const kSHKFacebookMyFriends = @"kSHKFacebookMyFriends";
 NSString *const kSHKFacebookVideoUploadLimits = @"kSHKFacebookVideoUploadLimits";
 NSString *const kSHKFacebookAPIUserInfoURL = @"https://graph.facebook.com/me";
+NSString *const kSHKFacebookAPIMyFriendsURL = @"https://graph.facebook.com/me/friends";
 NSString *const kSHKFacebookAPIFeedURL = @"https://graph.facebook.com/me/feed";
 NSString *const kSHKFacebookAPIPhotosURL = @"https://graph.facebook.com/me/photos";
 NSString *const kSHKFacebookAPIVideosURL = @"https://graph.facebook.com/me/videos";

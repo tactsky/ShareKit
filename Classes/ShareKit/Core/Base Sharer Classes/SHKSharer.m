@@ -851,6 +851,9 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
             
         case SHKShareTypeUserInfo:
             return [[self class] canGetUserInfo];
+            
+        case SHKShareTypeMyFriends:
+            return [[self class] canGetMyFriends];
 		default:
 			break;
 	}

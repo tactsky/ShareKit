@@ -90,6 +90,8 @@
 	return YES;
 }
 
++ (BOOL)canGetMyFriends { return NO; }
+
 + (BOOL)canShareFile:(SHKFile *)file {
     
     BOOL result = [SHKTwitterCommon canShareFile:file];

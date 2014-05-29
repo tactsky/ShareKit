@@ -41,6 +41,7 @@ typedef void (^SHKRequestHandlerBlock)(NSData *responseData, NSURLResponse *urlR
 + (NSString *)sharerTitle { return SHKLocalizedString(@"Twitter"); }
 
 + (BOOL)canGetUserInfo { return YES; }
++ (BOOL)canGetMyFriends { return NO; }
 + (BOOL)canShareURL { return YES; }
 + (BOOL)canShareText { return YES; }
 + (BOOL)canShareImage { return YES; }

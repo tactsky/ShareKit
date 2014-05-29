@@ -132,6 +132,7 @@ static NSString *const kSHKDropboxDestinationDirKeyName = @"kSHKDropboxDestinati
 + (NSString *)sharerTitle {	return SHKLocalizedString(@"Dropbox"); }
 
 + (BOOL)canGetUserInfo { return YES; }
++ (BOOL)canGetMyFriends { return NO; }
 + (BOOL)canShareImage { return YES; }
 + (BOOL)canShareFile:(SHKFile *)file { return YES; }
 

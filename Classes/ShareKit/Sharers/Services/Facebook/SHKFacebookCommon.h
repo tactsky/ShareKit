@@ -15,8 +15,10 @@
 @class SHKItem;
 
 extern NSString *const kSHKFacebookUserInfo;
+extern NSString *const kSHKFacebookMyFriends;
 extern NSString *const kSHKFacebookVideoUploadLimits;
 extern NSString *const kSHKFacebookAPIUserInfoURL;
+extern NSString *const kSHKFacebookAPIMyFriendsURL;
 extern NSString *const kSHKFacebookAPIFeedURL;
 extern NSString *const kSHKFacebookAPIPhotosURL;
 extern NSString *const kSHKFacebookAPIVideosURL;

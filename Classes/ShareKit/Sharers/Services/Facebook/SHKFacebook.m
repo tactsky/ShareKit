@@ -254,6 +254,11 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
     return YES;
 }
 
++ (BOOL)canGetMyFriends
+{
+    return YES;
+}
+
 + (BOOL)canShare {
     
     BOOL result = ![SHKFacebookCommon socialFrameworkAvailable];
@@ -290,6 +295,7 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 	[FBSettings setDefaultAppID:SHKCONFIG(facebookAppId)];
 	[FBSession.activeSession closeAndClearTokenInformation];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSHKFacebookUserInfo];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSHKFacebookMyFriends];
 }
 
 #pragma mark -
@@ -401,7 +407,8 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 		return NO;
 	
     // Ask for publish_actions permissions in context
-    if (self.item.shareType != SHKShareTypeUserInfo &&[FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {	// we need at least this.SHKCONFIG(facebookWritePermissions
+    if ((self.item.shareType != SHKShareTypeUserInfo && self.item.shareType != SHKShareTypeMyFriends )
+        &&[FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {	// we need at least this.SHKCONFIG(facebookWritePermissions
         // No permissions found in session, ask for it
         [self saveItemForLater:SHKPendingSend];
         [self displayActivity:SHKLocalizedString(@"Authenticating...")];
@@ -515,6 +522,15 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 		}];
 		[self.pendingConnections addObject:con];
 	}
+    else if (self.item.shareType == SHKShareTypeMyFriends)
+	{	// sharekit demo app doesn't use this, handy if you need to show user info, such as user name for OAuth services in your app, see https://github.com/ShareKit/ShareKit/wiki/FAQ
+		[self setQuiet:YES];
+		FBRequestConnection* con = [FBRequestConnection startForMyFriendsWithCompletionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+			[self FBMyFriendsRequestHandlerCallback:connection result:result error:error];
+		}];
+		[self.pendingConnections addObject:con];
+	}
+
     [self sendDidStart];
 }
 
@@ -563,6 +579,26 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
     }];
     [self.pendingConnections addObject:con];
 }
+
+-(void)FBMyFriendsRequestHandlerCallback:(FBRequestConnection *)connection
+                                  result:(id) result
+                                   error:(NSError *)error
+{
+	if(![self.pendingConnections containsObject:connection]){
+		NSLog(@"SHKFacebook - received a callback for a connection not in the pending requests.");
+	}
+	[self.pendingConnections removeObject:connection];
+	if (error) {
+		[self hideActivityIndicator];
+		[self sendDidFailWithError:error];
+	}else{
+        NSArray * fetchedFriendData = [[NSArray alloc] initWithArray:[result objectForKey:@"data"]];
+		[[NSUserDefaults standardUserDefaults] setObject:fetchedFriendData forKey:kSHKFacebookMyFriends];
+		[self sendDidFinish];
+	}
+	[FBSession.activeSession close];	// unhook us
+}
+
 
 -(void)FBUserInfoRequestHandlerCallback:(FBRequestConnection *)connection
 						 result:(id) result

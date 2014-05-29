@@ -103,6 +103,10 @@ NSString * const SHKPlurkPrivateKey = @"limited_to";
     
     return YES;
 }
++ (BOOL)canGetMyFriends
+{
+    return NO;
+}
 
 + (BOOL)canAutoShare
 {

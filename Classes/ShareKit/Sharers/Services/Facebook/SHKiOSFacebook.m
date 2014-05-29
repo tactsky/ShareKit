@@ -27,6 +27,7 @@ typedef void (^SHKRequestHandler)(NSData *responseData, NSURLResponse *urlRespon
 + (NSString *)sharerTitle {	return SHKLocalizedString(@"Facebook"); }
 
 + (BOOL)canGetUserInfo { return YES; }
++ (BOOL)canGetMyFriends { return YES; }
 + (BOOL)canShareURL { return YES; }
 + (BOOL)canShareText { return YES; }
 + (BOOL)canShareImage { return YES; }
@@ -123,6 +124,7 @@ typedef void (^SHKRequestHandler)(NSData *responseData, NSURLResponse *urlRespon
 + (void)logout {
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSHKFacebookUserInfo];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kSHKFacebookMyFriends];
 }
 
 #pragma mark - ShareKit UI
@@ -140,6 +142,9 @@ typedef void (^SHKRequestHandler)(NSData *responseData, NSURLResponse *urlRespon
     if (![self validateItem]) return NO;
     
     switch (self.item.shareType) {
+        case SHKShareTypeMyFriends:
+            [self fetchMyFriends];
+            break;
         case SHKShareTypeUserInfo:
             [self fetchUserInfo];
             break;
@@ -226,6 +231,25 @@ typedef void (^SHKRequestHandler)(NSData *responseData, NSURLResponse *urlRespon
     SLRequest *videoLimitsRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
                                                        requestMethod:SLRequestMethodGET
                                                                  URL:[NSURL URLWithString:kSHKFacebookAPIUserInfoURL]
+                                                          parameters:@{@"fields": @"video_upload_limits"}];
+    videoLimitsRequest.account = [self availableAccounts][0];
+    [videoLimitsRequest performRequestWithHandler:[self requestHandler]];
+}
+
+- (void)fetchMyFriends {
+    
+    self.quiet = YES;
+    
+    SLRequest *request = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                            requestMethod:SLRequestMethodGET
+                                                      URL:[NSURL URLWithString:kSHKFacebookAPIMyFriendsURL]
+                                               parameters:nil];
+    request.account = [self availableAccounts][0];
+    [request performRequestWithHandler:[self requestHandler]];
+    
+    SLRequest *videoLimitsRequest = [SLRequest requestForServiceType:SLServiceTypeFacebook
+                                                       requestMethod:SLRequestMethodGET
+                                                                 URL:[NSURL URLWithString:kSHKFacebookAPIMyFriendsURL]
                                                           parameters:@{@"fields": @"video_upload_limits"}];
     videoLimitsRequest.account = [self availableAccounts][0];
     [videoLimitsRequest performRequestWithHandler:[self requestHandler]];
