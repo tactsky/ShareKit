@@ -91,6 +91,7 @@
 }
 
 + (BOOL)canGetMyFriends { return NO; }
++ (BOOL)canSendAppRequest { return NO; }
 
 + (BOOL)canShareFile:(SHKFile *)file {
     

@@ -50,6 +50,7 @@ NSString *SHKLinkedInVisibilityCodeKey = @"visibility.code";
 + (BOOL)canShareText { return YES; }
 + (BOOL)canGetUserInfo { return YES; }
 + (BOOL)canGetMyFriends { return NO; }
++ (BOOL)canSendAppRequest { return NO; }
 
 #pragma mark -
 #pragma mark Authentication

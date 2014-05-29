@@ -108,6 +108,8 @@ NSString * const SHKPlurkPrivateKey = @"limited_to";
     return NO;
 }
 
++ (BOOL)canSendAppRequest { return NO; }
+ 
 + (BOOL)canAutoShare
 {
 	return NO;

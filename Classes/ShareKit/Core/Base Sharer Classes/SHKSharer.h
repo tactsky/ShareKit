@@ -102,6 +102,8 @@
 
 + (id)getFriends;
 
++ (id)sendAppRequest:(NSString *)text to:(NSString*) to;
+
 #pragma mark -
 #pragma mark Commit Share
 

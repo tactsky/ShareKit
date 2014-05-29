@@ -69,6 +69,7 @@ typedef enum
 + (BOOL)canShareFile:(SHKFile *)file;
 + (BOOL)canGetUserInfo;
 + (BOOL)canGetMyFriends;
++ (BOOL)canSendAppRequest;
 
 #pragma mark -
 #pragma mark Configuration : Dynamic Enable

@@ -38,6 +38,7 @@
 // there are two so that the logic of their lifetimes is understandable.
 static SHKFacebook *authingSHKFacebook=nil;
 static SHKFacebook *requestingPermisSHKFacebook=nil;
+static FBFrictionlessRecipientCache * s_friendCache;
 
 @interface SHKFacebook()
 
@@ -259,6 +260,11 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
     return YES;
 }
 
++ (BOOL)canSendAppRequest
+{
+    return YES;
+}
+
 + (BOOL)canShare {
     
     BOOL result = ![SHKFacebookCommon socialFrameworkAvailable];
@@ -388,6 +394,18 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 #pragma mark -
 #pragma mark Share API Methods
 
+- (NSDictionary*)parseURLParams:(NSString *)query {
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    for (NSString *pair in pairs) {
+        NSArray *kv = [pair componentsSeparatedByString:@"="];
+        NSString *val =
+        [kv[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        params[kv[0]] = val;
+    }
+    return params;
+}
+
 -(void) sendDidCancel
 {
 	[super sendDidCancel];
@@ -407,7 +425,7 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 		return NO;
 	
     // Ask for publish_actions permissions in context
-    if ((self.item.shareType != SHKShareTypeUserInfo && self.item.shareType != SHKShareTypeMyFriends )
+    if ((self.item.shareType != SHKShareTypeUserInfo && self.item.shareType != SHKShareTypeMyFriends && self.item.shareType != SHKShareTypeSendAppRequest)
         &&[FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {	// we need at least this.SHKCONFIG(facebookWritePermissions
         // No permissions found in session, ask for it
         [self saveItemForLater:SHKPendingSend];
@@ -530,6 +548,71 @@ static SHKFacebook *requestingPermisSHKFacebook=nil;
 		}];
 		[self.pendingConnections addObject:con];
 	}
+    else if (self.item.shareType == SHKShareTypeSendAppRequest)
+    {
+//        NSError *error;
+//        NSData *jsonData = [NSJSONSerialization
+//                            dataWithJSONObject:@{
+//                            @"social_karma": @"5",
+//                            @"badge_of_awesomeness": @"1"}
+//                            options:0
+//                            error:&error];
+//        if (!jsonData) {
+//            NSLog(@"JSON error: %@", error);
+//            return;
+//        }
+//
+//        NSString *giftStr = [[NSString alloc]
+//                             initWithData:jsonData
+//                             encoding:NSUTF8StringEncoding];
+
+//       NSMutableDictionary* para2 = [@{@"data" : giftStr} mutableCopy];
+        [self setQuiet:YES];
+        NSMutableDictionary* para2 = [[NSMutableDictionary alloc] init];
+        if ( self.item.title ) {
+            [para2 setObject:self.item.title forKey:@"to"];
+        }
+        
+        if ( s_friendCache == NULL ) {
+            s_friendCache = [[FBFrictionlessRecipientCache alloc] init];
+        }
+        
+        [s_friendCache prefetchAndCacheForSession:nil];
+
+        //        [para2 setObject:@"true" forKey:@"new_style_message"];
+        // Display the requests dialog
+        [FBWebDialogs
+         presentRequestsDialogModallyWithSession:nil
+         message: self.item.text
+         title:nil
+         parameters:para2
+         handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+             if (error) {
+                 // Error launching the dialog or sending the request.
+                 NSLog(@"Error sending request.");
+                 [self sendDidFailWithError:error];
+             } else {
+                 if (result == FBWebDialogResultDialogNotCompleted) {
+                     // User clicked the "x" icon
+                     NSLog(@"User canceled request.");
+                 } else {
+                     // Handle the send request callback
+                     NSDictionary *urlParams = [self parseURLParams:[resultURL query]];
+                     if (![urlParams valueForKey:@"request"]) {
+                         // User clicked the Cancel button
+                         NSLog(@"User canceled request.");
+                     } else {
+                         // User clicked the Send button
+                         NSString *requestID = [urlParams valueForKey:@"request"];
+                         NSLog(@"Request ID: %@", requestID);
+                     }
+                 }
+                 [self sendDidFinish];
+             }
+             [FBSession.activeSession close];	// unhook us
+         } friendCache:s_friendCache];
+    }
+
 
     [self sendDidStart];
 }

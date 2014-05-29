@@ -325,6 +325,52 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
     }
 }
 
++ (id)getFriends
+{
+    SHKItem *item = [[SHKItem alloc] init];
+    item.shareType = SHKShareTypeMyFriends;
+    
+    if ([self canShareItem:item]) {
+        
+        // Create controller and set share options
+        SHKSharer *controller = [[self alloc] init];
+        controller.item = item;
+        
+        // share and/or show UI
+        [controller share];
+        return controller;
+        
+    } else {
+        
+        SHKLog(@"Warning!!! This sharer does not get my friends.");
+        return nil;
+    }
+}
+
++ (id)sendAppRequest:(NSString *)text to:(NSString*) to;
+{
+    SHKItem *item = [[SHKItem alloc] init];
+    item.shareType = SHKShareTypeSendAppRequest;
+    item.text = text;
+    item.title = to;
+    if ([self canShareItem:item]) {
+        
+        // Create controller and set share options
+        SHKSharer *controller = [[self alloc] init];
+        controller.item = item;
+        
+        // share and/or show UI
+        [controller share];
+        return controller;
+        
+    } else {
+        
+        SHKLog(@"Warning!!! This sharer does not send app request.");
+        return nil;
+    }
+}
+
+
 #pragma mark - Share Item temporary save
 
 - (BOOL)restoreItem {
@@ -854,6 +900,8 @@ static NSString *const kSHKStoredShareInfoKey=@"kSHKStoredShareInfo";
             
         case SHKShareTypeMyFriends:
             return [[self class] canGetMyFriends];
+        case SHKShareTypeSendAppRequest:
+            return [[self class] canSendAppRequest];
 		default:
 			break;
 	}

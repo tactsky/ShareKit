@@ -77,6 +77,7 @@ static NSString *accessTokenKey = @"accessToken";
 + (BOOL)canShareText { return YES; }
 + (BOOL)canGetUserInfo { return YES; }
 + (BOOL)canGetMyFriends { return NO; }
++ (BOOL)canSendAppRequest { return NO; }
 
 + (BOOL)canShareOffline { return NO; }
 

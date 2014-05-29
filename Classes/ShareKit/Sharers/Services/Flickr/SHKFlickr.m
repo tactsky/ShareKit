@@ -50,6 +50,7 @@
 + (BOOL)canShareImage { return YES; }
 + (BOOL)canGetUserInfo { return YES; }
 + (BOOL)canGetMyFriends { return NO; }
++ (BOOL)canSendAppRequest { return NO; }
 + (BOOL)canShareFile:(SHKFile *)file {
     
     NSArray *allowedFileTypes = @[@"image/jpeg",

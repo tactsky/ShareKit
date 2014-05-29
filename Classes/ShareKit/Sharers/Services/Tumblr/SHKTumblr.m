@@ -74,6 +74,7 @@ NSString * const kSHKTumblrUserInfo = @"kSHKTumblrUserInfo";
 }
 + (BOOL)canGetUserInfo { return YES; }
 + (BOOL)canGetMyFriends { return NO; }
++ (BOOL)canSendAppRequest { return NO; }
 + (BOOL)canAutoShare { return NO; }
 
 #pragma mark -

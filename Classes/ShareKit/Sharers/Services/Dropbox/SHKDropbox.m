@@ -134,6 +134,7 @@ static NSString *const kSHKDropboxDestinationDirKeyName = @"kSHKDropboxDestinati
 + (BOOL)canGetUserInfo { return YES; }
 + (BOOL)canGetMyFriends { return NO; }
 + (BOOL)canShareImage { return YES; }
++ (BOOL)canSendAppRequest { return NO; }
 + (BOOL)canShareFile:(SHKFile *)file { return YES; }
 
 #pragma mark -

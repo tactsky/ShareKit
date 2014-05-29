@@ -42,6 +42,7 @@ typedef void (^SHKRequestHandlerBlock)(NSData *responseData, NSURLResponse *urlR
 
 + (BOOL)canGetUserInfo { return YES; }
 + (BOOL)canGetMyFriends { return NO; }
++ (BOOL)canSendAppRequest { return NO; }
 + (BOOL)canShareURL { return YES; }
 + (BOOL)canShareText { return YES; }
 + (BOOL)canShareImage { return YES; }

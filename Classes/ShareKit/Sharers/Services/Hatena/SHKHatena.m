@@ -40,6 +40,7 @@ NSString * const kSHKHatenaUserInfo = @"kSHKHatenaUserInfo";
 + (BOOL)canShareURL { return YES; }
 + (BOOL)canGetUserInfo { return YES; }
 + (BOOL)canGetMyFriends { return NO; }
++ (BOOL)canSendAppRequest { return NO; }
 
 + (NSString *)username {
     
