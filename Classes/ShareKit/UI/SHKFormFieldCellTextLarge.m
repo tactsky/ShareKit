@@ -9,7 +9,6 @@
 #import "SHKFormFieldCellTextLarge.h"
 #import "SHKFormFieldCell_PrivateProperties.h"
 #import "SHKFormFieldLargeTextSettings.h"
-#import "SAMTextView.h"
 
 #import "UIImage+OurBundle.h"
 #import "UIApplication+iOSVersion.h"
@@ -27,7 +26,7 @@
 
 @interface SHKFormFieldCellTextLarge ()
 
-@property (weak, nonatomic) SAMTextView *textView;
+@property (weak, nonatomic) UITextView *textView;
 @property (weak, nonatomic) UILabel *counter;
 @property (weak, nonatomic) UIImageView *clippedImageView;
 @property (weak, nonatomic) UIImageView *clipImageView;
@@ -41,7 +40,7 @@
 
 - (void)setupLayout {
     
-    SAMTextView *textView = [[SAMTextView alloc] initWithFrame:[self frameForTextview]];
+    UITextView *textView = [[UITextView alloc] initWithFrame:[self frameForTextview]];
     textView.delegate = self;
     textView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     textView.contentInset = UIEdgeInsetsMake(-8, 0, 0, 0);
@@ -117,7 +116,7 @@
     [super setupWithSettings:settings];
     
     self.textView.text = settings.displayValue;
-    self.textView.placeholder = settings.label;
+//    self.textView.placeholder = settings.label;
     self.fileExtension.text = [self.settings extensionForThumbnail];
     [self checkClipImage];
     [self updateCounter];
