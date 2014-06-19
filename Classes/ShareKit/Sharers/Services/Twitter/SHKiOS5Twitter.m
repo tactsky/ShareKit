@@ -43,6 +43,13 @@
 	return @"SHKTwitter";
 }
 
++ (BOOL)canGetUserInfo { return YES; }
++ (BOOL)canGetMyFriends { return NO; }
++ (BOOL)canSendAppRequest { return NO; }
++ (BOOL)canShareURL { return YES; }
++ (BOOL)canShareText { return YES; }
++ (BOOL)canShareImage { return YES; }
+
 - (void)share {
     
     if ([self.item shareType] == SHKShareTypeUserInfo) {
