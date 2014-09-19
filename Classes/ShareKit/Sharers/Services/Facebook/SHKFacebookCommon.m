@@ -93,7 +93,7 @@ NSString *const kSHKFacebookAPIVideosURL = @"https://graph.facebook.com/me/video
             }
             
             if (item.title) [result setObject:item.title forKey:NAME_API_KEY];
-            if (item.caption) [result setObject:item.text forKey:CAPTION_API_KEY];
+            if (item.caption) [result setObject:item.caption forKey:CAPTION_API_KEY];
             if (item.text) [result setObject:item.text forKey:MESSAGE_API_KEY];
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
