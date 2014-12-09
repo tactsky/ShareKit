@@ -88,9 +88,9 @@ NSString * const kSHKTumblrUserInfo = @"kSHKTumblrUserInfo";
 		self.secretKey = SHKCONFIG(tumblrSecret);
  		self.authorizeCallbackURL = [NSURL URLWithString:SHKCONFIG(tumblrCallbackUrl)];
 		
-	    self.requestURL = [NSURL URLWithString:@"http://www.tumblr.com/oauth/request_token"];
-	    self.authorizeURL = [NSURL URLWithString:@"http://www.tumblr.com/oauth/authorize"];
-	    self.accessURL = [NSURL URLWithString:@"http://www.tumblr.com/oauth/access_token"];
+	    self.requestURL = [NSURL URLWithString:@"https://www.tumblr.com/oauth/request_token"];
+	    self.authorizeURL = [NSURL URLWithString:@"https://www.tumblr.com/oauth/authorize"];
+	    self.accessURL = [NSURL URLWithString:@"https://www.tumblr.com/oauth/access_token"];
 		
 		self.signatureProvider = [[OAHMAC_SHA1SignatureProvider alloc] init];
 	}	
@@ -211,7 +211,7 @@ NSString * const kSHKTumblrUserInfo = @"kSHKTumblrUserInfo";
     if (self.item.shareType == SHKShareTypeUserInfo) return [super validateItem];
 	
     NSString *blog = [self.item customValueForKey:@"blog"];
-    BOOL isBlogFilled = ![blog isEqualToString:@""] && ![blog isEqualToString:@"-1"];
+    BOOL isBlogFilled = ![blog isEqualToString:@""] && ![blog isEqualToString:@"-1"] && blog != nil;
     BOOL itemValid = isBlogFilled && [super validateItem];
     
 	return itemValid;

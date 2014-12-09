@@ -13,6 +13,7 @@
 		<string>SHK1Password</string>
 		<string>SHKTextMessage</string>
 		<string>SHKLogout</string>
+		<string>SHKReadingList</string>
 	</array>
 	<key>services</key>
 	<array>

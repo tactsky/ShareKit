@@ -105,8 +105,11 @@
 		
 	// Start Connection
 	SHKLog(@"Start SHKRequest:\nURL: %@\nparams: %@", self.url, self.params);
-	NSURLConnection *aConnection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:YES];
-    self.connection = aConnection;	
+	NSURLConnection *aConnection = [[NSURLConnection alloc] initWithRequest:self.request delegate:self startImmediately:NO];
+    [aConnection scheduleInRunLoop:[NSRunLoop mainRunLoop]
+                           forMode:NSDefaultRunLoopMode];
+    self.connection = aConnection;
+    [aConnection start];
 }
 
 - (NSMutableURLRequest *)createRequest {
@@ -150,6 +153,25 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection 
 {
 	[self finish];
+}
+
+- (NSURLRequest *)connection: (NSURLConnection *)connection
+             willSendRequest: (NSURLRequest *)request
+            redirectResponse: (NSURLResponse *)redirectResponse;
+{
+    if (redirectResponse) {
+        NSURL* newURL = [request URL];
+        if ([self.request.URL user]) {
+            // copy over the username and password if there was one.
+            newURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@:%@@%@%@?%@", [newURL scheme], self.request.URL.user, self.request.URL.password, [newURL host], [newURL path], [newURL query]]];
+            
+        }
+        NSMutableURLRequest *r = [self.request mutableCopy];
+        [r setURL: newURL];
+        return r;
+    } else {
+        return request;
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error 

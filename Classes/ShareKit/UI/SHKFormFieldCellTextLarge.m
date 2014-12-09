@@ -116,19 +116,24 @@
     [super setupWithSettings:settings];
     
     self.textView.text = settings.displayValue;
-//    self.textView.placeholder = settings.label;
-    self.fileExtension.text = [self.settings extensionForThumbnail];
-    [self checkClipImage];
+//   self.textView.placeholder = settings.label;
+     self.fileExtension.text = [self.settings extensionForThumbnail];
     [self updateCounter];
 }
 
 - (void)checkClipImage {
     
     if ([self.settings shouldShowThumbnail]) {
+        
+        self.clipImageView.hidden = NO;
+        
         self.clippedImageView.hidden = NO;
         [self.settings setupThumbnailOnImageView:self.clippedImageView];
-        self.clipImageView.hidden = NO;
+        
+        //this must be called after setupThumbnail...
+        self.fileExtension.text = [self.settings extensionForThumbnail];
         self.fileExtension.hidden = NO;
+        
     } else {
         self.clippedImageView.hidden = YES;
         self.clipImageView.hidden = YES;

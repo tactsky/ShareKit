@@ -356,6 +356,7 @@
                                                                        realm:nil
                                                            signatureProvider:nil];
 	[oRequest setHTTPMethod:@"POST"];
+    [oRequest prepare];
     
 	OARequestParameter *statusParam = [[OARequestParameter alloc] initWithName:@"status" value:[self.item customValueForKey:@"status"]];
 	[oRequest setParameters:@[statusParam]];
