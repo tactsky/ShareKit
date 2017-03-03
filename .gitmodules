@@ -27,7 +27,7 @@
 	url = https://github.com/soffes/SAMTextView.git
 [submodule "Submodules/SDWebImage"]
 	path = Submodules/SDWebImage
-	url = https://github.com/rs/SDWebImage.git
+url=git@github.com:tactsky/SDWebImage.git
 [submodule "Submodules/UIActivityIndicator-for-SDWebImage"]
 	path = Submodules/UIActivityIndicator-for-SDWebImage
 	url = https://github.com/JJSaccolo/UIActivityIndicator-for-SDWebImage.git
